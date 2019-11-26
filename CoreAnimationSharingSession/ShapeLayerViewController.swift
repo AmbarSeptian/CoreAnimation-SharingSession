@@ -22,7 +22,7 @@ class ShapelayerViewController: UIViewController {
     
     let shapeLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
-        let frame = CGRect(origin: CGPoint(x: 20, y: 50), size: CGSize(width: 200, height: 200))
+        let frame = CGRect(origin: CGPoint(x: 20, y: 100), size: CGSize(width: 200, height: 200))
         layer.frame = frame
         let bounds = layer.bounds
         

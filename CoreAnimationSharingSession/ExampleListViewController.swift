@@ -66,7 +66,7 @@ extension ExampleListViewController: UITableViewDelegate {
         
         switch example {
         case .basic:
-            viewController = UIViewController()
+            viewController = BasicLayerViewController()
         case .shapeLayer:
             viewController = ShapelayerViewController()
         case .gradientLayer:
