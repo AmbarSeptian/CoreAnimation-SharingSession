@@ -13,6 +13,9 @@
 		E505AA0023830EE5004A3206 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E505A9FF23830EE5004A3206 /* Assets.xcassets */; };
 		E505AA0323830EE5004A3206 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E505AA0123830EE5004A3206 /* LaunchScreen.storyboard */; };
 		E5789337238D41E800165B2E /* ExampleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5789336238D41E800165B2E /* ExampleListViewController.swift */; };
+		E5789339238D465500165B2E /* ShapeLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5789338238D465500165B2E /* ShapeLayerViewController.swift */; };
+		E578933B238D46B500165B2E /* TransformLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578933A238D46B500165B2E /* TransformLayerViewController.swift */; };
+		E578933D238D477000165B2E /* GradientLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578933C238D477000165B2E /* GradientLayerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		E505AA0223830EE5004A3206 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E505AA0423830EE5004A3206 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5789336238D41E800165B2E /* ExampleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleListViewController.swift; sourceTree = "<group>"; };
+		E5789338238D465500165B2E /* ShapeLayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeLayerViewController.swift; sourceTree = "<group>"; };
+		E578933A238D46B500165B2E /* TransformLayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformLayerViewController.swift; sourceTree = "<group>"; };
+		E578933C238D477000165B2E /* GradientLayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientLayerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +65,9 @@
 				E505A9F623830EE4004A3206 /* AppDelegate.swift */,
 				E505A9F823830EE4004A3206 /* SceneDelegate.swift */,
 				E505A9FA23830EE4004A3206 /* ViewController.swift */,
+				E5789338238D465500165B2E /* ShapeLayerViewController.swift */,
+				E578933A238D46B500165B2E /* TransformLayerViewController.swift */,
+				E578933C238D477000165B2E /* GradientLayerViewController.swift */,
 				E5789336238D41E800165B2E /* ExampleListViewController.swift */,
 				E505A9FF23830EE5004A3206 /* Assets.xcassets */,
 				E505AA0123830EE5004A3206 /* LaunchScreen.storyboard */,
@@ -137,10 +146,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5789339238D465500165B2E /* ShapeLayerViewController.swift in Sources */,
 				E505A9FB23830EE4004A3206 /* ViewController.swift in Sources */,
+				E578933D238D477000165B2E /* GradientLayerViewController.swift in Sources */,
 				E5789337238D41E800165B2E /* ExampleListViewController.swift in Sources */,
 				E505A9F723830EE4004A3206 /* AppDelegate.swift in Sources */,
 				E505A9F923830EE4004A3206 /* SceneDelegate.swift in Sources */,
+				E578933B238D46B500165B2E /* TransformLayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -68,11 +68,11 @@ extension ExampleListViewController: UITableViewDelegate {
         case .basic:
             viewController = UIViewController()
         case .shapeLayer:
-            viewController = UIViewController()
+            viewController = ShapelayerViewController()
         case .gradientLayer:
-            viewController = UIViewController()
+            viewController = GradientLayerViewController()
         case .transformLayer:
-            viewController = UIViewController()
+            viewController = TransformLayerViewController()
         }
         
         navigationController?.pushViewController(viewController, animated: true)
