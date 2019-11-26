@@ -12,15 +12,19 @@ class ExampleListViewController: UIViewController {
     let tableView = UITableView()
     
     enum Example: CaseIterable {
-        case basic, shapeLayer, gradientLayer, transformLayer
+        case basic, masking, shapeLayer, gradientLayer, replicatorLayer, transformLayer
         var description: String {
             switch self {
             case .basic:
                 return "Basic"
+            case .masking:
+                return "Masking"
             case .shapeLayer:
                 return "Shape Layer"
             case .gradientLayer:
                 return "Gradient Layer"
+            case .replicatorLayer:
+                return "Replicator Layer"
             case .transformLayer:
                 return "Transform Layer"
             }
@@ -69,8 +73,12 @@ extension ExampleListViewController: UITableViewDelegate {
             viewController = BasicLayerViewController()
         case .shapeLayer:
             viewController = ShapelayerViewController()
+        case .masking:
+            viewController = MaskViewController()
         case .gradientLayer:
             viewController = GradientLayerViewController()
+        case .replicatorLayer:
+            viewController = ReplicatorViewController()
         case .transformLayer:
             viewController = TransformLayerViewController()
         }

@@ -22,6 +22,8 @@ class TransformLayerViewController: UIViewController {
         view.backgroundColor = .white
         view.layer.addSublayer(transformLayer)
         view.addGestureRecognizer(panGesture)
+        
+        title = "Transform Layer"
     }
     
     override func viewDidLayoutSubviews() {
@@ -75,22 +77,6 @@ class TransformLayerViewController: UIViewController {
         
         return layer
     }()
-    
-    let tiledLayer: CATiledLayer = {
-        let layer = CATiledLayer()
-        return layer
-    }()
-    
-    let emittedLayer: CAEmitterLayer = {
-        let layer = CAEmitterLayer()
-        return layer
-    }()
-    
-    let layer: CATextLayer = {
-       let layer = CATextLayer()
-        return layer
-    }()
-    
     
     func createSublayer(transform: CATransform3D, color: UIColor) -> CALayer {
         let layer = CALayer()

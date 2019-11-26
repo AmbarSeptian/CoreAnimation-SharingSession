@@ -17,6 +17,8 @@
 		E578933B238D46B500165B2E /* TransformLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578933A238D46B500165B2E /* TransformLayerViewController.swift */; };
 		E578933D238D477000165B2E /* GradientLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578933C238D477000165B2E /* GradientLayerViewController.swift */; };
 		E578933F238D48DE00165B2E /* BasicLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578933E238D48DE00165B2E /* BasicLayerViewController.swift */; };
+		E5789341238DA32900165B2E /* MaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5789340238DA32900165B2E /* MaskViewController.swift */; };
+		E5789343238DA5D200165B2E /* ReplicatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5789342238DA5D200165B2E /* ReplicatorViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		E578933A238D46B500165B2E /* TransformLayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformLayerViewController.swift; sourceTree = "<group>"; };
 		E578933C238D477000165B2E /* GradientLayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientLayerViewController.swift; sourceTree = "<group>"; };
 		E578933E238D48DE00165B2E /* BasicLayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicLayerViewController.swift; sourceTree = "<group>"; };
+		E5789340238DA32900165B2E /* MaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskViewController.swift; sourceTree = "<group>"; };
+		E5789342238DA5D200165B2E /* ReplicatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplicatorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,9 +73,11 @@
 				E505A9FA23830EE4004A3206 /* ViewController.swift */,
 				E5789338238D465500165B2E /* ShapeLayerViewController.swift */,
 				E578933E238D48DE00165B2E /* BasicLayerViewController.swift */,
+				E5789340238DA32900165B2E /* MaskViewController.swift */,
 				E578933A238D46B500165B2E /* TransformLayerViewController.swift */,
 				E578933C238D477000165B2E /* GradientLayerViewController.swift */,
 				E5789336238D41E800165B2E /* ExampleListViewController.swift */,
+				E5789342238DA5D200165B2E /* ReplicatorViewController.swift */,
 				E505A9FF23830EE5004A3206 /* Assets.xcassets */,
 				E505AA0123830EE5004A3206 /* LaunchScreen.storyboard */,
 				E505AA0423830EE5004A3206 /* Info.plist */,
@@ -156,6 +162,8 @@
 				E505A9F723830EE4004A3206 /* AppDelegate.swift in Sources */,
 				E505A9F923830EE4004A3206 /* SceneDelegate.swift in Sources */,
 				E578933B238D46B500165B2E /* TransformLayerViewController.swift in Sources */,
+				E5789343238DA5D200165B2E /* ReplicatorViewController.swift in Sources */,
+				E5789341238DA32900165B2E /* MaskViewController.swift in Sources */,
 				E578933F238D48DE00165B2E /* BasicLayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

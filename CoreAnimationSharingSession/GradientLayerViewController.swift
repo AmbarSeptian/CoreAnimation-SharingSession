@@ -15,6 +15,8 @@ class GradientLayerViewController: UIViewController {
         view.backgroundColor = .white
         view.layer.addSublayer(linearLayer)
         view.layer.addSublayer(radialLayer)
+        
+        title = "Gradient Layer"
     }
     
     override func viewDidLayoutSubviews() {

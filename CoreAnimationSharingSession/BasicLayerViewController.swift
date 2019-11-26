@@ -15,9 +15,37 @@ class BasicLayerViewController: UIViewController {
         
         view.layer.backgroundColor = #colorLiteral(red: 0.8661591598, green: 0.8658027469, blue: 0.7614286672, alpha: 1).cgColor
         view.addSubview(basicView)
-        view.layer.addSublayer(imageLayer)
+        
+        view.layer.addSublayer(imageMaskLayer)
+        imageMaskLayer.mask = imageLayer
+        
+        title = "Basic Layer"
     }
     
+    let shapeLayer: CAShapeLayer = {
+           let layer = CAShapeLayer()
+           let frame = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 400, height: 400))
+           layer.frame = frame
+           let bounds = layer.bounds
+           
+           let trianglePath = UIBezierPath()
+           let topCenterPosition = CGPoint(x: bounds.midX, y: bounds.minY)
+           trianglePath.move(to: topCenterPosition)
+           
+           let bottomLeftPosition = CGPoint(x: bounds.minX, y: bounds.maxY)
+           let bottomRightPosition = CGPoint(x: bounds.maxX, y: bounds.maxY)
+           trianglePath.addLine(to: bottomLeftPosition)
+           trianglePath.addLine(to: bottomRightPosition)
+           trianglePath.close()
+           
+           layer.path = trianglePath.cgPath
+           layer.fillColor = UIColor.blue.cgColor
+           layer.strokeColor = UIColor.black.cgColor
+           layer.lineWidth = 10
+           layer.backgroundColor = UIColor.gray.cgColor
+           
+           return layer
+       }()
     
     let basicLayer: CALayer = {
         let layer = CALayer()
@@ -42,19 +70,18 @@ class BasicLayerViewController: UIViewController {
         let image = UIImage(named: "applelogo")
         layer.contents = image?.cgImage
         layer.contentsGravity = .resizeAspect
-        layer.contentsRect = CGRect(x: 0.5, y: 0.5, width: 1, height: 1)
         
-        layer.rasterizationScale = UIScreen.main.scale
-        layer.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).cgColor
-        layer.frame = CGRect(x: 100, y: 200, width: 200, height: 200)
+        layer.contentsScale = UIScreen.main.scale
+        layer.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
         return layer
     }()
     
-    
-//    lazy var wrapperMaskLayer: CALayer = {
-//        let layer = CALayer()
-////        layer.frame = CGRect(x: 100, y: <#T##CGFloat#>, width: <#T##CGFloat#>, height: <#T##CGFloat#>)
-//    }()
+    let imageMaskLayer: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
+        layer.frame = CGRect(x: 100, y: 200, width: 300, height: 300)
+        return layer
+    }()
     
 }
 
