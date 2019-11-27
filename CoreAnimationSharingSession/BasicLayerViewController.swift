@@ -65,9 +65,9 @@ class ShadowLayer: CALayer {
         backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
         
         shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        shadowOpacity = 0.12
+        shadowOpacity = 0.4
         shadowOffset =  CGSize(width: 0, height: 2)
-        shadowRadius = 4
+        shadowRadius = 8
     }
     
     required init?(coder: NSCoder) {
@@ -77,6 +77,13 @@ class ShadowLayer: CALayer {
     override func layoutSublayers() {
         super.layoutSublayers()
         let path = UIBezierPath(rect: bounds)
+        
+        // Custom Shadow
+//        let shadowSize: CGFloat = 10
+//        let shadowDistance: CGFloat = 20
+//        let rect = CGRect(x: -shadowSize, y: bounds.height + shadowDistance, width: bounds.width + (shadowSize * 2), height: shadowSize)
+//        let path = UIBezierPath(ovalIn: rect)
+//
         shadowPath = path.cgPath
     }
 }
