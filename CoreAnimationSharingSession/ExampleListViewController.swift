@@ -16,9 +16,9 @@ class ExampleListViewController: UIViewController {
         var description: String {
             switch self {
             case .basic:
-                return "Basic"
+                return "Basic Layer"
             case .masking:
-                return "Masking"
+                return "Masking Layer"
             case .shapeLayer:
                 return "Shape Layer"
             case .gradientLayer:
@@ -83,6 +83,7 @@ extension ExampleListViewController: UITableViewDelegate {
             viewController = TransformLayerViewController()
         }
         
+        viewController.title = example.description
         navigationController?.pushViewController(viewController, animated: true)
     }
 }

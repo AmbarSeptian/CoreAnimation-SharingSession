@@ -16,26 +16,37 @@ class ShapelayerViewController: UIViewController {
         return scrollView
     }()
     
+    lazy var circleLayer = createShapeLayer(shape: .circle, position: 0)
+    lazy var starLayer = createShapeLayer(shape: .star, position: 1)
+    lazy var triangeLayer = createShapeLayer(shape: .triangle, position: 2)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(scrollView)
         
-        let shapeLayer = createShapeLayer(shape: .circle, position: 0)
-        scrollView.layer.addSublayer(shapeLayer)
         
-        let starLayer = createShapeLayer(shape: .star, position: 1)
+        scrollView.layer.addSublayer(circleLayer)
         scrollView.layer.addSublayer(starLayer)
-        
-        let triangeLayer = createShapeLayer(shape: .triangle, position: 2)
         scrollView.layer.addSublayer(triangeLayer)
         
-        title = "Shape Layer"
+//        circleLayer.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+//        circleLayer.borderColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
+//        circleLayer.borderWidth = 2
+         
+//        circleLayer.lineDashPattern = [6, 2]
+//        circleLayer.lineWidth = 4
+        // uncomment to start animating line das()
+        // startLineDashPatternAnimation()
         
-//        strokeAndFillLayer.strokeColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-//        strokeAndFillLayer.backgroundColor = #colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1)
+//        circleLayer.strokeStart = 0
+//        circleLayer.strokeEnd = 0.5
         
+        // uncomment to start animating line dash
+        //  startStrokeStartAnimation()
     }
+    
+    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -56,13 +67,34 @@ class ShapelayerViewController: UIViewController {
         layer.fillColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
         layer.strokeColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
         layer.lineWidth = 4
-        
+    
         return layer
     }
     
+    
+    func startLineDashPatternAnimation() {
+        let animation = CABasicAnimation(keyPath: "lineDashPhase")
+        animation.fromValue = 0
+        animation.toValue = circleLayer.lineDashPattern?.reduce(0){ $0 + $1.intValue}
+        animation.duration = 0.5
+        animation.repeatCount = .greatestFiniteMagnitude
+        circleLayer.add(animation, forKey: nil)
+    }
+    
+    func startStrokeStartAnimation() {
+        circleLayer.strokeEnd = 0
+        // rotate the layer to make the `strokeStart` start at 12 o'clock position
+         circleLayer.transform = CATransform3DMakeRotation(-90 / 180 * .pi, 0, 0, 1)
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0
+        animation.toValue = 1
+        animation.duration = 5
+        animation.repeatCount = .greatestFiniteMagnitude
+        circleLayer.add(animation, forKey: nil)
+    }
+    
 }
-
-
 
 enum Shape {
     case circle

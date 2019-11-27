@@ -19,8 +19,6 @@ class MaskViewController: UIViewController {
         
         orangeMaskedLayer.mask = appleLogoMaskedLayer
         view.layer.addSublayer(orangeMaskedLayer)
-        
-        title = "Masking Layer"
     }
     
     // Original layer without masking

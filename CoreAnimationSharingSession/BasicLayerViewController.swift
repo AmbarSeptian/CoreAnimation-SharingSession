@@ -9,83 +9,74 @@
 import UIKit
 
 class BasicLayerViewController: UIViewController {
+    lazy var basicView: BasicView = {
+        let view = BasicView()
+        view.frame = CGRect(x: 100, y: 100, width: 200, height: 200)
+        return view
+    }()
+    
+    lazy var shadowLayer: ShadowLayer = {
+        let layer = ShadowLayer()
+        layer.frame = CGRect(x: 100, y: 400, width: 200, height: 200)
+        return layer
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.layer.backgroundColor = #colorLiteral(red: 0.8661591598, green: 0.8658027469, blue: 0.7614286672, alpha: 1).cgColor
         view.addSubview(basicView)
-        
-        view.layer.addSublayer(imageMaskLayer)
-        imageMaskLayer.mask = imageLayer
-        
-        title = "Basic Layer"
+        view.layer.addSublayer(shadowLayer)
     }
-    
-    let shapeLayer: CAShapeLayer = {
-           let layer = CAShapeLayer()
-           let frame = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 400, height: 400))
-           layer.frame = frame
-           let bounds = layer.bounds
-           
-           let trianglePath = UIBezierPath()
-           let topCenterPosition = CGPoint(x: bounds.midX, y: bounds.minY)
-           trianglePath.move(to: topCenterPosition)
-           
-           let bottomLeftPosition = CGPoint(x: bounds.minX, y: bounds.maxY)
-           let bottomRightPosition = CGPoint(x: bounds.maxX, y: bounds.maxY)
-           trianglePath.addLine(to: bottomLeftPosition)
-           trianglePath.addLine(to: bottomRightPosition)
-           trianglePath.close()
-           
-           layer.path = trianglePath.cgPath
-           layer.fillColor = UIColor.blue.cgColor
-           layer.strokeColor = UIColor.black.cgColor
-           layer.lineWidth = 10
-           layer.backgroundColor = UIColor.gray.cgColor
-           
-           return layer
-       }()
-    
-    let basicLayer: CALayer = {
-        let layer = CALayer()
-        layer.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        return layer
-    }()
-    
-    lazy var basicView: UIView = {
-        let view = UIView()
-        view.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
-        view.layer.addSublayer(basicLayer)
-        return view
-    }()
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        basicLayer.bounds = basicView.bounds
     }
-    
-    lazy var imageLayer: CALayer = {
-        let layer = CALayer()
-        let image = UIImage(named: "applelogo")
-        layer.contents = image?.cgImage
-        layer.contentsGravity = .resizeAspect
-        
-        layer.contentsScale = UIScreen.main.scale
-        layer.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
-        return layer
-    }()
-    
-    let imageMaskLayer: CALayer = {
-        let layer = CALayer()
-        layer.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
-        layer.frame = CGRect(x: 100, y: 200, width: 300, height: 300)
-        return layer
-    }()
-    
 }
 
 
-// Masking
-// Shadow
-//
+class BasicView: UIView {
+    let basicLayer: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
+        layer.cornerRadius = 20
+        return layer
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        layer.addSublayer(basicLayer)
+        layer.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        basicLayer.frame = bounds.insetBy(dx: 10, dy: 10)
+    }
+}
+
+
+class ShadowLayer: CALayer {
+    override init() {
+        super.init()
+        backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
+        
+        shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        shadowOpacity = 0.12
+        shadowOffset =  CGSize(width: 0, height: 2)
+        shadowRadius = 4
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSublayers() {
+        super.layoutSublayers()
+        let path = UIBezierPath(rect: bounds)
+        shadowPath = path.cgPath
+    }
+}

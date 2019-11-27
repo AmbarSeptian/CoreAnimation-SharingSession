@@ -22,8 +22,6 @@ class TransformLayerViewController: UIViewController {
         view.backgroundColor = .white
         view.layer.addSublayer(transformLayer)
         view.addGestureRecognizer(panGesture)
-        
-        title = "Transform Layer"
     }
     
     override func viewDidLayoutSubviews() {
