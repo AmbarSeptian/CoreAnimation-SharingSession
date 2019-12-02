@@ -12,7 +12,7 @@ class ExampleListViewController: UIViewController {
     let tableView = UITableView()
     
     enum Example: CaseIterable {
-        case basic, masking, shapeLayer, gradientLayer, replicatorLayer, transformLayer
+        case basic, masking, shapeLayer, gradientLayer, replicatorLayer, transformLayer, coba
         var description: String {
             switch self {
             case .basic:
@@ -27,6 +27,8 @@ class ExampleListViewController: UIViewController {
                 return "Replicator Layer"
             case .transformLayer:
                 return "Transform Layer"
+            case .coba:
+                return "Coba"
             }
         }
     }
@@ -40,6 +42,9 @@ class ExampleListViewController: UIViewController {
             tableView.dataSource = self
             tableView.delegate = self
         }
+        
+        let vc = CobaViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -81,6 +86,8 @@ extension ExampleListViewController: UITableViewDelegate {
             viewController = ReplicatorViewController()
         case .transformLayer:
             viewController = TransformLayerViewController()
+        case .coba:
+            viewController = CobaViewController()
         }
         
         viewController.title = example.description

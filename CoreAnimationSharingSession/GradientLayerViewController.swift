@@ -22,10 +22,12 @@ class GradientLayerViewController: UIViewController {
     }
     
      lazy var linearLayer: CAGradientLayer = {
-         let layer = CAGradientLayer()
-         layer.frame = CGRect(x: 20, y: 300, width: view.bounds.width - 40, height: 200)
-         layer.colors = [#colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1), #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1), #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)].map({ $0.cgColor })
-         layer.locations = [0, 0.5, 1].map({ NSNumber(value: $0) })
+        let layer = CAGradientLayer()
+        layer.frame = CGRect(x: 20, y: 300, width: view.bounds.width - 40, height: 200)
+        layer.colors = [#colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1), #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1), #colorLiteral(red: 0.5725490451, green: 0, blue: 0.2313725501, alpha: 1)].map({ $0.cgColor })
+        layer.locations = [0, 0.5].map({ NSNumber(value: $0) })
+        layer.startPoint = CGPoint(x: 0, y: 0)
+        layer.endPoint = CGPoint(x: 1, y: 0)
          return layer
      }()
     
