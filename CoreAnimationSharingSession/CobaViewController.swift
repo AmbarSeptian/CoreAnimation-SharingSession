@@ -19,7 +19,7 @@ class CobaViewController: UIViewController {
         
         view.addSubview(buttonView)
     }
-
+    
 }
 
 
@@ -35,18 +35,18 @@ class ASDFView: UIView {
     }()
     
     lazy var circularLayer: CAShapeLayer = {
-          let layer = CAShapeLayer()
-          let inset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-          let frame = CGRect(x: 0, y: 0, width: 200, height: 200)
-          layer.frame = frame
-          layer.path = UIBezierPath(ovalIn: frame.inset(by: inset)).cgPath
-          layer.lineWidth = 10
-          layer.fillColor = UIColor.clear.cgColor
-          layer.transform = CATransform3DMakeRotation(-90 / 180 * .pi, 0, 0, 1)
-          layer.strokeColor = UIColor.white.cgColor
-          
-          return layer
-      }()
+        let layer = CAShapeLayer()
+        let inset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+        layer.frame = frame
+        layer.path = UIBezierPath(ovalIn: frame.inset(by: inset)).cgPath
+        layer.lineWidth = 10
+        layer.fillColor = UIColor.clear.cgColor
+        layer.transform = CATransform3DMakeRotation(-90 / 180 * .pi, 0, 0, 1)
+        layer.strokeColor = UIColor.white.cgColor
+        
+        return layer
+    }()
     
     lazy var replicatorLayer: CAReplicatorLayer = {
         let replicatorLayer = CAReplicatorLayer()
@@ -76,6 +76,7 @@ class ASDFView: UIView {
         layer.addSublayer(downArrowLayer)
         
         animateRotateCircle(layer: circularLayer)
+        animateArrow(layer: downArrowLayer)
         
     }
     
@@ -87,18 +88,18 @@ class ASDFView: UIView {
         let strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
         strokeEndAnimation.fromValue = 0.2
         strokeEndAnimation.toValue = 1
-//        strokeEndAnimation.duration = 2
+        //        strokeEndAnimation.duration = 2
         
         let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotateAnimation.toValue = CGFloat.pi * 4
         //        rotateAnimation.duration = 5
-
+        
         let animationGroup = CAAnimationGroup()
         animationGroup.animations = [strokeEndAnimation, rotateAnimation]
         animationGroup.duration = 4
-
+        
         layer.add(animationGroup, forKey: nil)
-//        layer.strokeEnd = 1
+        //        layer.strokeEnd = 1
     }
     
     func animateCircleScale(layer: CALayer) {
@@ -115,19 +116,37 @@ class ASDFView: UIView {
         animationGroup.duration = 3
         animationGroup.repeatCount = .infinity
         animationGroup.fillMode = .forwards
-
+        
         layer.add(animationGroup, forKey: nil)
     }
     
+    func animateArrow(layer: CALayer) {
+        let pathAnimation = CABasicAnimation(keyPath: "path")
+//        let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        let path = UIBezierPath()
+        path.move(to: layer.frame.origin)
+        path.addLine(to: layer.frame.origin)
+        pathAnimation.toValue = path.cgPath
+        pathAnimation.duration = 5
+        layer.add(pathAnimation, forKey: nil)
+        
+        let pathAnimation = CABasicAnimation(keyPath: "path")
+        pathAnimation.toValue = self.renderCheckmarkPath(frame: layer.frame).cgPath
+        pathAnimation.duration = 5
+        layer.add(pathAnimation, forKey: nil)
+    }
+    
+    //CLOUD
     
     lazy var downArrowLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         let path = UIBezierPath()
         let inset = UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60)
         let frame = CGRect(x: 0, y: 0, width: 200, height: 200)
-                    .inset(by: inset)
+            .inset(by: inset)
         
-        layer.path = renderCheckmarkPath(frame: frame).cgPath
+        layer.frame = frame
+        layer.path = renderDownArrowPath(frame: frame).cgPath
         layer.strokeColor = UIColor.white.cgColor
         layer.lineWidth = 10
         layer.fillColor = UIColor.clear.cgColor
