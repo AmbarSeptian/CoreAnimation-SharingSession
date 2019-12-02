@@ -29,13 +29,24 @@ class ASDFView: UIView {
         let frame = CGRect(x: 0, y: 0, width: 200, height: 200)
         layer.frame = frame
         layer.path = UIBezierPath(ovalIn: frame).cgPath
-        layer.fillColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
-        layer.lineWidth = 2
-        layer.transform = CATransform3DMakeRotation(-90 / 180 * .pi, 0, 0, 1)
-        layer.strokeColor = UIColor.black.cgColor
+        layer.fillColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
         
         return layer
     }()
+    
+    lazy var circularLayer: CAShapeLayer = {
+          let layer = CAShapeLayer()
+          let inset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+          let frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+          layer.frame = frame
+          layer.path = UIBezierPath(ovalIn: frame.inset(by: inset)).cgPath
+          layer.lineWidth = 10
+          layer.fillColor = UIColor.clear.cgColor
+          layer.transform = CATransform3DMakeRotation(-90 / 180 * .pi, 0, 0, 1)
+          layer.strokeColor = UIColor.white.cgColor
+          
+          return layer
+      }()
     
     lazy var replicatorLayer: CAReplicatorLayer = {
         let replicatorLayer = CAReplicatorLayer()
@@ -61,6 +72,10 @@ class ASDFView: UIView {
         super.init(frame: frame)
         layer.addSublayer(replicatorLayer)
         layer.addSublayer(circleLayer)
+        layer.addSublayer(circularLayer)
+        layer.addSublayer(downArrowLayer)
+        
+        animateRotateCircle(layer: circularLayer)
         
     }
     
@@ -69,22 +84,21 @@ class ASDFView: UIView {
     }
     
     func animateRotateCircle(layer: CAShapeLayer) {
-        layer.strokeEnd = 0
         let strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        strokeEndAnimation.fromValue = 0.2
         strokeEndAnimation.toValue = 1
-        strokeEndAnimation.duration = 2
+//        strokeEndAnimation.duration = 2
         
-//        let scaleAnimation = CABasicAnimation(keyPath: "transform")
-//        scaleAnimation.fromValue = CATransform3DScale(CATransform3DIdentity, 0.5, 0.5, 0)
-//        scaleAnimation.toValue = CATransform3DScale(CATransform3DIdentity, 2, 2, 0)
-//
-//        let animationGroup = CAAnimationGroup()
-//        animationGroup.animations = [strokeEndAnimation, scaleAnimation]
-//        animationGroup.duration = 3
-//        animationGroup.repeatCount = .infinity
-//        animationGroup.fillMode = .forwards
-//
-//        layer.add(animationGroup, forKey: nil)
+        let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotateAnimation.toValue = CGFloat.pi * 4
+        //        rotateAnimation.duration = 5
+
+        let animationGroup = CAAnimationGroup()
+        animationGroup.animations = [strokeEndAnimation, rotateAnimation]
+        animationGroup.duration = 4
+
+        layer.add(animationGroup, forKey: nil)
+//        layer.strokeEnd = 1
     }
     
     func animateCircleScale(layer: CALayer) {
@@ -103,8 +117,48 @@ class ASDFView: UIView {
         animationGroup.fillMode = .forwards
 
         layer.add(animationGroup, forKey: nil)
+    }
+    
+    
+    lazy var downArrowLayer: CAShapeLayer = {
+        let layer = CAShapeLayer()
+        let path = UIBezierPath()
+        let inset = UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60)
+        let frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+                    .inset(by: inset)
         
+        layer.path = renderCheckmarkPath(frame: frame).cgPath
+        layer.strokeColor = UIColor.white.cgColor
+        layer.lineWidth = 10
+        layer.fillColor = UIColor.clear.cgColor
+        layer.lineCap = .round
+        return layer
+    }()
+    
+    func renderDownArrowPath(frame: CGRect) -> UIBezierPath {
+        let path = UIBezierPath()
+        let topLeftPoint = CGPoint(x: frame.minX, y: frame.minY)
+        path.move(to: topLeftPoint)
         
-
+        let bottomMiddlePoint = CGPoint(x: frame.midX, y: frame.midX)
+        path.addLine(to: bottomMiddlePoint)
+        
+        let topRightPoint = CGPoint(x: frame.maxX, y: frame.minY)
+        path.addLine(to: topRightPoint)
+        return path
+    }
+    
+    
+    func renderCheckmarkPath(frame: CGRect) -> UIBezierPath {
+        let path = UIBezierPath()
+        let topLeftPoint = CGPoint(x: frame.minX + 10, y: frame.minY + 20)
+        path.move(to: topLeftPoint)
+        
+        let bottomMiddlePoint = CGPoint(x: frame.midX - 10, y: frame.midY)
+        path.addLine(to: bottomMiddlePoint)
+        
+        let topRightPoint = CGPoint(x: frame.maxX + 10, y: frame.minY)
+        path.addLine(to: topRightPoint)
+        return path
     }
 }
