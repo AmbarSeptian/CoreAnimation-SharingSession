@@ -29,7 +29,7 @@ class ASDFView: UIView {
         let frame = CGRect(x: 0, y: 0, width: 200, height: 200)
         layer.frame = frame
         layer.path = UIBezierPath(ovalIn: frame).cgPath
-//        layer.fillColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
+        layer.fillColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
         layer.lineWidth = 2
         layer.transform = CATransform3DMakeRotation(-90 / 180 * .pi, 0, 0, 1)
         layer.strokeColor = UIColor.black.cgColor
@@ -41,24 +41,19 @@ class ASDFView: UIView {
         let replicatorLayer = CAReplicatorLayer()
         let replicatorFrame = CGRect(x: 0, y: 0, width: 200, height: 200)
         replicatorLayer.frame = replicatorFrame
-        replicatorLayer.backgroundColor = UIColor.blue.cgColor
         
         let circleLayer = CAShapeLayer()
         circleLayer.frame = replicatorFrame
         circleLayer.path = UIBezierPath(ovalIn: replicatorFrame).cgPath
-        circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.strokeColor = UIColor.white.withAlphaComponent(0.2).cgColor
-        
+        circleLayer.fillColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         replicatorLayer.addSublayer(circleLayer)
         
         let instanceCount = 5
         replicatorLayer.instanceCount = instanceCount
-        replicatorLayer.instanceDelay = 1 / CFTimeInterval(instanceCount)
-        replicatorLayer.instanceAlphaOffset = 0.05
-        replicatorLayer.backgroundColor = UIColor.orange.cgColor
-    
-        let scale: CGFloat = 1.2
-        replicatorLayer.instanceTransform = CATransform3DMakeScale(scale, scale, 0)
+        replicatorLayer.instanceDelay = 1
+        
+        animateCircleScale(layer: circleLayer)
+        
         return replicatorLayer
     }()
     
@@ -66,10 +61,6 @@ class ASDFView: UIView {
         super.init(frame: frame)
         layer.addSublayer(replicatorLayer)
         layer.addSublayer(circleLayer)
-        
-        backgroundColor = .red
-        
-//        animateRotateCircle(layer: circleLayer)
         
     }
     
@@ -79,12 +70,41 @@ class ASDFView: UIView {
     
     func animateRotateCircle(layer: CAShapeLayer) {
         layer.strokeEnd = 0
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.toValue = 1
-        animation.duration = 2
-        animation.repeatCount = .infinity
+        let strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        strokeEndAnimation.toValue = 1
+        strokeEndAnimation.duration = 2
         
-        layer.add(animation, forKey: nil)
+//        let scaleAnimation = CABasicAnimation(keyPath: "transform")
+//        scaleAnimation.fromValue = CATransform3DScale(CATransform3DIdentity, 0.5, 0.5, 0)
+//        scaleAnimation.toValue = CATransform3DScale(CATransform3DIdentity, 2, 2, 0)
+//
+//        let animationGroup = CAAnimationGroup()
+//        animationGroup.animations = [strokeEndAnimation, scaleAnimation]
+//        animationGroup.duration = 3
+//        animationGroup.repeatCount = .infinity
+//        animationGroup.fillMode = .forwards
+//
+//        layer.add(animationGroup, forKey: nil)
+    }
+    
+    func animateCircleScale(layer: CALayer) {
+        let opacityAnimation = CABasicAnimation(keyPath: "opacity")
+        opacityAnimation.fromValue = 1
+        opacityAnimation.toValue = 0
         
+        let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+        scaleAnimation.fromValue = 0.5
+        scaleAnimation.toValue = 2
+        
+        let animationGroup = CAAnimationGroup()
+        animationGroup.animations = [opacityAnimation, scaleAnimation]
+        animationGroup.duration = 3
+        animationGroup.repeatCount = .infinity
+        animationGroup.fillMode = .forwards
+
+        layer.add(animationGroup, forKey: nil)
+        
+        
+
     }
 }

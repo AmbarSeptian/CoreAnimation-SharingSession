@@ -48,7 +48,7 @@ class Coba2iewController: UIViewController {
         view.backgroundColor = .white
         
         view.layer.addSublayer(radialLayer)
-        view.addSubview(buttonView)
+//        view.addSubview(buttonView)
         
         let anim = CABasicAnimation(keyPath: "colors")
         anim.toValue = [#colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1), #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1), #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)].map({ $0.cgColor })
@@ -76,5 +76,4 @@ class Coba2iewController: UIViewController {
         layer.add(opacityAnimation, forKey: nil)
         layer.add(scaleAnimation, forKey: nil)
     }
-}
 }
