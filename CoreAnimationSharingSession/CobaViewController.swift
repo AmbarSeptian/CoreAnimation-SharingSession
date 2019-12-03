@@ -120,20 +120,27 @@ class ASDFView: UIView {
         layer.add(animationGroup, forKey: nil)
     }
     
-    func animateArrow(layer: CALayer) {
-        let pathAnimation = CABasicAnimation(keyPath: "path")
-//        let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+    func animateArrow(layer: CAShapeLayer) {
+        let bounds = layer.bounds
         let path = UIBezierPath()
-        path.move(to: layer.frame.origin)
-        path.addLine(to: layer.frame.origin)
-        pathAnimation.toValue = path.cgPath
-        pathAnimation.duration = 5
-        layer.add(pathAnimation, forKey: nil)
+        path.move(to: bounds.origin)
+        path.addLine(to: bounds.origin)
+        path.addLine(to: bounds.origin)
         
-        let pathAnimation = CABasicAnimation(keyPath: "path")
-        pathAnimation.toValue = self.renderCheckmarkPath(frame: layer.frame).cgPath
-        pathAnimation.duration = 5
-        layer.add(pathAnimation, forKey: nil)
+        let keyFrameAnimation = CAKeyframeAnimation()
+        keyFrameAnimation.keyTimes = [0, 0.2, 0.3, 0.7, 0.9]
+        keyFrameAnimation.duration = 2
+        keyFrameAnimation.keyPath = "path"
+        keyFrameAnimation.isAdditive = true
+        keyFrameAnimation.values = [
+            layer.path ?? UIBezierPath(),
+            self.renderDownArrowPath1(frame: bounds).cgPath,
+                                    self.renderDownArrowPath2(frame: bounds).cgPath,
+                                    self.renderCheckmarkPath1(frame: bounds).cgPath,
+        self.renderCheckmarkPath(frame: bounds).cgPath
+        ]
+        layer.path = self.renderCheckmarkPath(frame:bounds).cgPath
+        layer.add(keyFrameAnimation, forKey: nil)
     }
     
     //CLOUD
@@ -146,11 +153,14 @@ class ASDFView: UIView {
             .inset(by: inset)
         
         layer.frame = frame
-        layer.path = renderDownArrowPath(frame: frame).cgPath
+        let center = CGRect(origin: .zero, size: frame.size)
+        layer.path = renderDownArrowPath(frame: center).cgPath
         layer.strokeColor = UIColor.white.cgColor
         layer.lineWidth = 10
         layer.fillColor = UIColor.clear.cgColor
         layer.lineCap = .round
+        layer.lineJoin = .round
+        layer.fillRule = .evenOdd
         return layer
     }()
     
@@ -159,7 +169,7 @@ class ASDFView: UIView {
         let topLeftPoint = CGPoint(x: frame.minX, y: frame.minY)
         path.move(to: topLeftPoint)
         
-        let bottomMiddlePoint = CGPoint(x: frame.midX, y: frame.midX)
+        let bottomMiddlePoint = CGPoint(x: frame.midX, y: frame.midY)
         path.addLine(to: bottomMiddlePoint)
         
         let topRightPoint = CGPoint(x: frame.maxX, y: frame.minY)
@@ -167,17 +177,59 @@ class ASDFView: UIView {
         return path
     }
     
+    func renderDownArrowPath1(frame: CGRect) -> UIBezierPath {
+        let path = UIBezierPath()
+        let topLeftPoint = CGPoint(x: frame.minX, y: frame.minY)
+        path.move(to: topLeftPoint)
+        
+        let bottomMiddlePoint = CGPoint(x: frame.midX, y: frame.midY)
+        path.addLine(to: bottomMiddlePoint)
+        return path
+    }
+    
+    func renderDownArrowPath2(frame: CGRect) -> UIBezierPath {
+         let path = UIBezierPath()
+         let topLeftPoint = CGPoint(x: frame.minX, y: frame.minY)
+         path.move(to: topLeftPoint)
+        path.addLine(to: topLeftPoint)
+         return path
+     }
     
     func renderCheckmarkPath(frame: CGRect) -> UIBezierPath {
         let path = UIBezierPath()
-        let topLeftPoint = CGPoint(x: frame.minX + 10, y: frame.minY + 20)
+        let topLeftPoint = CGPoint(x: frame.minX + 10, y: frame.minY)
+        path.move(to: topLeftPoint)
+        
+        let bottomMiddlePoint = CGPoint(x: frame.midX - 5, y: frame.midY)
+        path.addLine(to: bottomMiddlePoint)
+        
+        let topRightPoint = CGPoint(x: frame.maxX + 20, y: frame.minY - 15)
+        path.addLine(to: topRightPoint)
+        return path
+    }
+    
+    func renderCheckmarkPath1(frame: CGRect) -> UIBezierPath {
+        let path = UIBezierPath()
+        let topLeftPoint = CGPoint(x: frame.minX + 10, y: frame.minY)
         path.move(to: topLeftPoint)
         
         let bottomMiddlePoint = CGPoint(x: frame.midX - 10, y: frame.midY)
         path.addLine(to: bottomMiddlePoint)
         
-        let topRightPoint = CGPoint(x: frame.maxX + 10, y: frame.minY)
-        path.addLine(to: topRightPoint)
         return path
     }
 }
+
+extension UIBezierPath {
+    
+}
+
+//struct CheckmarkPath {
+//    let path: UIBezierPath
+//
+//    init(frame: CGRect) {
+//        path = UIBezierPath()
+//        let topLeftPoint = CGPoint(x: frame.minX + 10, y: frame.minY + 20)
+//        path.move(to: topLeftPoint)
+//    }
+//}
