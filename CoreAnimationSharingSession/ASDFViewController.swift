@@ -103,4 +103,20 @@ class ASDFViewController: UIViewController {
    }
 
 }
-
+//
+//lazy var circleLayer: CAShapeLayer = {
+//       let layer = CAShapeLayer()
+//       let frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+//       let path = UIBezierPath(ovalIn: frame).cgPath
+//       layer.frame = frame
+//       layer.path = path
+//       layer.fillColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+//       
+//       layer.shadowColor = UIColor.red.cgColor
+//       layer.shadowOpacity = 1
+//       layer.shadowRadius = 5
+//       layer.shadowPath = path
+//       layer.masksToBounds = false
+//       
+//       return layer
+//   }()
