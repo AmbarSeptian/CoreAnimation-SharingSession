@@ -9,20 +9,22 @@
 import UIKit
 
 class CobaViewController: UIViewController {
-    lazy var buttonView: ASDFView = {
-        return ASDFView(frame: CGRect(x: 100, y: 200, width: 200, height: 200))
+    lazy var customView: CustomView = {
+        return CustomView(frame: CGRect(x: 50, y: 200, width: 300, height: 300))
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        view.addSubview(buttonView)
+        view.addSubview(customView)
     }
 }
 
 
-class ASDFView: UIView {
+class CustomView: UIView {
+    let duration: TimeInterval = 4
+    
     lazy var circleLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         let frame = bounds
@@ -31,8 +33,8 @@ class ASDFView: UIView {
         layer.path = path
         layer.fillColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
         
-        layer.shadowColor = UIColor.red.cgColor
-        layer.shadowOpacity = 1
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.2
         layer.shadowRadius = 5
         layer.shadowPath = path
         layer.masksToBounds = false
@@ -47,33 +49,30 @@ class ASDFView: UIView {
         layer.contentsGravity = .resizeAspect
         
         layer.contentsScale = UIScreen.main.scale
-        layer.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
+        layer.frame = bounds.inset(by: UIEdgeInsets(50))
         return layer
     }()
     
     
     lazy var gradientLayer: CAGradientLayer = {
          let layer = CAGradientLayer()
-         let frame = CGRect(x: 0, y: 0, width: 300, height: 300)
+         let frame = bounds
          layer.frame = frame
-         layer.colors = [#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1), #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)].map({ $0.cgColor })
-         layer.startPoint = CGPoint(x: 0.5, y: 0.5)
-         layer.endPoint = CGPoint(x: 1, y: 1)
-         layer.type = .radial
-
-         return layer
+         layer.colors = [#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), #colorLiteral(red: 0.8722377419, green: 0.8722377419, blue: 0.8722377419, alpha: 1)].map({ $0.cgColor })
+        return layer
      }()
     
     lazy var circularLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
-        let inset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let inset = UIEdgeInsets(15)
         let frame = bounds
         layer.frame = frame
         layer.path = UIBezierPath(ovalIn: frame.inset(by: inset)).cgPath
         layer.lineWidth = 15
         layer.fillColor = UIColor.clear.cgColor
         layer.transform = CATransform3DMakeRotation(-90 / 180 * .pi, 0, 0, 1)
-        layer.strokeColor = UIColor.white.cgColor
+        layer.strokeColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        layer.strokeEnd = 0
         
         return layer
     }()
@@ -101,7 +100,7 @@ class ASDFView: UIView {
         return replicatorLayer
     }()
     
-    private lazy var tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didViewTapped(_:)))
+    lazy var tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didViewTapped(_:)))
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -116,13 +115,18 @@ class ASDFView: UIView {
         animateCircleScale(layer: ripleLayer)
     }
     
-    private func addSublayers() {
-        layer.addSublayer(replicatorLayer)
-//        gradientLayer.mask = cloudLayer
-//        layer.addSublayer(cloudLayer)
-//        layer.addSublayer(gradientLayer)
-        layer.addSublayer(circularLayer)
-        layer.addSublayer(downArrowLayer)
+    func addSublayers() {
+        addSublayers: do {
+            layer.addSublayer(replicatorLayer)
+            layer.addSublayer(circleLayer)
+            layer.addSublayer(gradientLayer)
+            layer.addSublayer(circularLayer)
+            layer.addSublayer(downArrowLayer)
+        }
+       
+        masking: do {
+           gradientLayer.mask = cloudLayer
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -139,7 +143,7 @@ class ASDFView: UIView {
         
         let animationGroup = CAAnimationGroup()
         animationGroup.animations = [strokeEndAnimation, rotateAnimation]
-        animationGroup.duration = 4
+        animationGroup.duration = duration
         
         layer.add(animationGroup, forKey: nil)
     }
@@ -156,7 +160,7 @@ class ASDFView: UIView {
         let animationGroup = CAAnimationGroup()
         animationGroup.animations = [opacityAnimation, scaleAnimation]
         animationGroup.duration = 3
-        animationGroup.repeatCount = .infinity
+        animationGroup.isRemovedOnCompletion = false
         animationGroup.fillMode = .forwards
         
         layer.add(animationGroup, forKey: nil)
@@ -164,99 +168,70 @@ class ASDFView: UIView {
     
     func animateArrow(layer: CAShapeLayer) {
         let bounds = layer.bounds
-        let path = UIBezierPath()
-        path.move(to: bounds.origin)
-        path.addLine(to: bounds.origin)
-        path.addLine(to: bounds.origin)
-        
+
         let keyFrameAnimation = CAKeyframeAnimation()
-        keyFrameAnimation.keyTimes = [0, 0.5, 0.6, 0.7, 0.9]
-        keyFrameAnimation.duration = 2
+        keyFrameAnimation.keyTimes =  [0, 0.4, 0.5, 0.6, 0.7, 0.9]
+        keyFrameAnimation.duration = duration
         keyFrameAnimation.keyPath = "path"
         keyFrameAnimation.isAdditive = true
-        keyFrameAnimation.values = [
-            layer.path ?? UIBezierPath(),
-            self.renderDownArrowPath1(frame: bounds).cgPath,
-                                    self.renderDownArrowPath2(frame: bounds).cgPath,
-                                    self.renderCheckmarkPath1(frame: bounds).cgPath,
-        self.renderCheckmarkPath(frame: bounds).cgPath
-        ]
-        layer.path = self.renderCheckmarkPath(frame:bounds).cgPath
+        
+        
+        let arrowGenerator = ArrowShapeGenerator(frame: bounds)
+        let arrowShape = arrowGenerator.createShape()
+        let arrowFirstPath = arrowGenerator.createFirstPath()
+        let arrowSecondPath = arrowGenerator.createSecondPath()
+        
+           let topLeftPoint = CGPoint(x: bounds.minX, y: bounds.midY)
+             let path = UIBezierPath()
+             path.move(to: topLeftPoint)
+             path.addLine(to: topLeftPoint)
+//        let arrowThirdPath = arrowGenerator.createThirdPath(arrowSecondPath)
+        
+        let checkmarkGenerator = CheckmarkGenerator(frame: bounds)
+        let checkmarkShape = checkmarkGenerator.createShape()
+        let checkmarkFirstPath = checkmarkGenerator.createFirstPath()
+        let checkmarkSecondPath = checkmarkGenerator.createSecondPath()
+        
+        let paths = [ arrowShape,
+                      arrowSecondPath,
+                      arrowFirstPath,
+                      checkmarkFirstPath,
+                      checkmarkSecondPath,
+                      checkmarkShape
+            ].map{( $0.cgPath )}
+        
+        keyFrameAnimation.values = paths
+        layer.path = checkmarkShape.cgPath
         layer.add(keyFrameAnimation, forKey: nil)
     }
-    
-    //CLOUD
-    
+
     lazy var downArrowLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         let path = UIBezierPath()
-        let inset = UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60)
+        let inset = UIEdgeInsets(120)
         let frame = bounds
             .inset(by: inset)
         
         layer.frame = frame
         let center = CGRect(origin: .zero, size: frame.size)
-        layer.path = renderDownArrowPath(frame: center).cgPath
-        layer.strokeColor = UIColor.white.cgColor
+        
+        let arrowGenerator = ArrowShapeGenerator(frame: center)
+        layer.path = arrowGenerator.createShape().cgPath
+                        
+        layer.strokeColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
         layer.lineWidth = 15
         layer.fillColor = UIColor.clear.cgColor
         layer.lineCap = .round
         layer.lineJoin = .round
         return layer
     }()
-    
-    func renderDownArrowPath(frame: CGRect) -> UIBezierPath {
-        let path = UIBezierPath()
-        let topLeftPoint = CGPoint(x: frame.minX, y: frame.midY)
-        path.move(to: topLeftPoint)
-        
-        let bottomMiddlePoint = CGPoint(x: frame.midX, y: frame.maxY)
-        path.addLine(to: bottomMiddlePoint)
-        
-        let topRightPoint = CGPoint(x: frame.maxX, y: frame.midY)
-        path.addLine(to: topRightPoint)
-        return path
-    }
-    
-    func renderDownArrowPath1(frame: CGRect) -> UIBezierPath {
-        let path = UIBezierPath()
-        let topLeftPoint = CGPoint(x: frame.minX, y: frame.midY)
-        path.move(to: topLeftPoint)
-        
-        let bottomMiddlePoint = CGPoint(x: frame.midX, y: frame.maxY)
-        path.addLine(to: bottomMiddlePoint)
-        return path
-    }
-    
-    func renderDownArrowPath2(frame: CGRect) -> UIBezierPath {
-         let path = UIBezierPath()
-         let topLeftPoint = CGPoint(x: frame.minX, y: frame.midY)
-         path.move(to: topLeftPoint)
-         path.addLine(to: topLeftPoint)
-         return path
-     }
-    
-    func renderCheckmarkPath(frame: CGRect) -> UIBezierPath {
-        let path = UIBezierPath()
-        let topLeftPoint = CGPoint(x: frame.minX, y: frame.midY)
-        path.move(to: topLeftPoint)
-        
-        let bottomMiddlePoint = CGPoint(x: frame.midX - 10, y: frame.maxY - 10)
-        path.addLine(to: bottomMiddlePoint)
-        
-        let topRightPoint = CGPoint(x: frame.maxX + 12, y: frame.midY - 15)
-        path.addLine(to: topRightPoint)
-        return path
-    }
-    
-    func renderCheckmarkPath1(frame: CGRect) -> UIBezierPath {
-        let path = UIBezierPath()
-        let topLeftPoint = CGPoint(x: frame.minX, y: frame.midY)
-        path.move(to: topLeftPoint)
-        
-        let bottomMiddlePoint = CGPoint(x: frame.midX - 10, y: frame.maxY - 10)
-        path.addLine(to: bottomMiddlePoint)
-        
-        return path
+}
+
+
+extension UIEdgeInsets {
+    init(_ value: CGFloat) {
+        self.init(top: value, left: value, bottom: value, right: value)
     }
 }
+
+
