@@ -43,7 +43,7 @@ class ExampleListViewController: UIViewController {
             tableView.delegate = self
         }
         
-        let vc = CobaViewController()
+        let vc = DemoViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -87,7 +87,7 @@ extension ExampleListViewController: UITableViewDelegate {
         case .transformLayer:
             viewController = TransformLayerViewController()
         case .coba:
-            viewController = CobaViewController()
+            viewController = DemoViewController()
         }
         
         viewController.title = example.description

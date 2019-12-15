@@ -24,10 +24,10 @@ class ReplicatorViewController: UIViewController {
         
         // Change color per instance
         let offsetColor = -(1 / Float(replicatorLayer.instanceCount))
-        replicatorLayer.instanceGreenOffset = offsetColor
-        replicatorLayer.instanceRedOffset = offsetColor
+//        replicatorLayer.instanceGreenOffset = offsetColor
+//        replicatorLayer.instanceRedOffset = offsetColor
         
-//        replicatorLayer.instanceAlphaOffset = offsetColor
+        replicatorLayer.instanceAlphaOffset = offsetColor
         
         let instanceLayer = CALayer()
         instanceLayer.frame = CGRect(x: 0, y: 0, width: 30, height: 8)
@@ -38,7 +38,7 @@ class ReplicatorViewController: UIViewController {
         instanceLayer.position = CGPoint(x: spacePerInstance, y: yCenterOfReplicator)
         
         replicatorLayer.addSublayer(instanceLayer)
-        replicatorLayer.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1).cgColor
+//        replicatorLayer.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1).cgColor
         
         view.layer.addSublayer(replicatorLayer)
     }
