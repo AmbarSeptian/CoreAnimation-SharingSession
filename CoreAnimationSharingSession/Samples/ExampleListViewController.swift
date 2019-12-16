@@ -42,9 +42,6 @@ class ExampleListViewController: UIViewController {
             tableView.dataSource = self
             tableView.delegate = self
         }
-        
-        let vc = DemoViewController()
-        navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidLayoutSubviews() {
