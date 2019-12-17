@@ -17,7 +17,7 @@ class CustomView: UIView {
             layer.frame = frame
             layer.cornerRadius = bounds.width / 2
         }
-    
+        
         configureGradient: do {
             layer.colors = [#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1), #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)].map({ $0.cgColor })
             layer.locations = [0, 0.2]
@@ -34,42 +34,55 @@ class CustomView: UIView {
             
             let path = UIBezierPath(ovalIn: frame).cgPath
             layer.shadowPath = path
-        
+            
             layer.masksToBounds = false
         }
-
+        
         return layer
     }()
     
     lazy var cloudLayer: CALayer = {
         let layer = CALayer()
-        let image = UIImage(named: "cloud")
-        layer.contents = image?.cgImage
-        layer.contentsGravity = .resizeAspect
-        
-        layer.contentsScale = UIScreen.main.scale
         layer.frame = bounds.inset(by: UIEdgeInsets(50))
+        
+        setupImage: do {
+            let image = UIImage(named: "cloud")
+            layer.contents = image?.cgImage
+            layer.contentsGravity = .resizeAspect
+            layer.contentsScale = UIScreen.main.scale
+        }
+        
         return layer
     }()
     
     lazy var cloudGradientLayer: CAGradientLayer = {
-          let layer = CAGradientLayer()
-          let frame = bounds
-          layer.frame = frame
-          layer.colors = [#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)].map({ $0.cgColor })
-         return layer
-      }()
+        let layer = CAGradientLayer()
+        let frame = bounds
+        layer.frame = frame
+        layer.colors = [#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)].map({ $0.cgColor })
+        return layer
+    }()
     
     lazy var circleLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
-        let inset = UIEdgeInsets(15)
         let frame = bounds
         layer.frame = frame
-        layer.path = UIBezierPath(ovalIn: frame.inset(by: inset)).cgPath
-        layer.lineWidth = 15
-        layer.fillColor = UIColor.clear.cgColor
-        layer.transform = CATransform3DMakeRotation(-90 / 180 * .pi, 0, 0, 1)
-        layer.strokeColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        
+        createCircle: do {
+            let inset = UIEdgeInsets(15)
+            layer.path = UIBezierPath(ovalIn: frame.inset(by: inset)).cgPath
+        }
+        
+        apperance: do {
+            layer.lineWidth = 15
+            layer.fillColor = UIColor.clear.cgColor
+            layer.strokeColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        }
+        
+        rotateCircle: do {
+            layer.transform = CATransform3DMakeRotation(.pi / 2, 0, 0, 1)
+        }
+        
         
         return layer
     }()
@@ -91,7 +104,7 @@ class CustomView: UIView {
             replicatorLayer.frame = replicatorFrame
             
         }
-
+        
         configureInstanceLayer: do {
             let instanceCount = 5
             replicatorLayer.instanceCount = instanceCount
@@ -103,34 +116,34 @@ class CustomView: UIView {
     }()
     
     lazy var downArrowLayer: CAShapeLayer = {
-         let layer = CAShapeLayer()
-         let inset = UIEdgeInsets(120)
-         let frame = bounds.inset(by: inset)
-         let center = CGRect(origin: .zero, size: frame.size)
-         layer.frame = frame
-         
-         createArrowPath: do {
-             let path = UIBezierPath()
-             let arrowGenerator = ArrowShapeGenerator(frame: center)
-             layer.path = arrowGenerator.createShape().cgPath
-         }
-
-         configureLayer: do {
-             layer.strokeColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
-             layer.lineWidth = 15
-             layer.fillColor = UIColor.clear.cgColor
-             layer.lineCap = .round
-             layer.lineJoin = .round
-         }
-         
-         return layer
-     }()
+        let layer = CAShapeLayer()
+        let inset = UIEdgeInsets(120)
+        let frame = bounds.inset(by: inset)
+        let center = CGRect(origin: .zero, size: frame.size)
+        layer.frame = frame
+        
+        createArrowPath: do {
+            let path = UIBezierPath()
+            let arrowGenerator = ArrowShapeGenerator(frame: center)
+            layer.path = arrowGenerator.createShape().cgPath
+        }
+        
+        configureLayer: do {
+            layer.strokeColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
+            layer.lineWidth = 15
+            layer.fillColor = UIColor.clear.cgColor
+            layer.lineCap = .round
+            layer.lineJoin = .round
+        }
+        
+        return layer
+    }()
     
     lazy var tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didViewTapped(_:)))
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        buttonLayer.backgroundColor = UIColor.blue.cgColor
+        
         addSublayers()
         addGestureRecognizer(tapGesture)
     }
@@ -153,9 +166,9 @@ class CustomView: UIView {
             layer.addSublayer(circleLayer)
             layer.addSublayer(downArrowLayer)
         }
-       
+        
         masking: do {
-           cloudGradientLayer.mask = cloudLayer
+            cloudGradientLayer.mask = cloudLayer
         }
     }
     
@@ -171,18 +184,18 @@ class CustomView: UIView {
         
         configureStrokeEndAnimation: do {
             strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
-            strokeEndAnimation.fromValue = 0.2
+            strokeEndAnimation.fromValue = 0
             strokeEndAnimation.toValue = 1
         }
-
+        
         configureRotateAnimation: do {
             rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
             rotateAnimation.toValue = CGFloat.pi * 4
         }
-
+        
         configureStrokeColorAnimation: do {
             strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
-            strokeColorAnimation.fromValue = layer.strokeColor
+            strokeColorAnimation.fromValue = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).cgColor
             strokeColorAnimation.toValue = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1).cgColor
         }
         
@@ -193,34 +206,34 @@ class CustomView: UIView {
             animationGroup.isRemovedOnCompletion = false
             animationGroup.fillMode = .forwards
         }
-
+        
         setFinalValue: do {
-            layer.strokeEnd = 1
             layer.strokeColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1).cgColor
         }
-       
+        
         startAnimation: do {
             layer.add(animationGroup, forKey: nil)
         }
+        
     }
     
     func animateCircleScale(_ layer: CALayer, duration: Double) {
         let opacityAnimation: CABasicAnimation
         let scaleAnimation: CABasicAnimation
         let animationGroup: CAAnimationGroup
-
+        
         configureOpacityAnimation: do {
             opacityAnimation = CABasicAnimation(keyPath: "opacity")
             opacityAnimation.fromValue = 1
             opacityAnimation.toValue = 0
         }
-
+        
         configureScaleAnimation: do {
             scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
             scaleAnimation.fromValue = 0.5
             scaleAnimation.toValue = 2
         }
-
+        
         configureAnimationGroup: do {
             animationGroup = CAAnimationGroup()
             animationGroup.animations = [opacityAnimation, scaleAnimation]
@@ -229,10 +242,6 @@ class CustomView: UIView {
             animationGroup.fillMode = .forwards
         }
         
-        setFinalValue: do {
-            layer.opacity = 0
-        }
-
         startAnimation: do {
             layer.add(animationGroup, forKey: nil)
         }
@@ -248,12 +257,11 @@ class CustomView: UIView {
         
         let checkmarkShape: UIBezierPath
         let checkmarkSecondPath: UIBezierPath
-
+        
         createKeyFrameAnimation: do {
             keyFrameAnimation = CAKeyframeAnimation()
             keyFrameAnimation.duration = duration
             keyFrameAnimation.keyPath = "path"
-            keyFrameAnimation.isAdditive = true
             keyFrameAnimation.isRemovedOnCompletion = false
             keyFrameAnimation.fillMode = .forwards
         }
@@ -273,10 +281,10 @@ class CustomView: UIView {
         
         addPathsToKeyFrameAnimation: do {
             let paths = [arrowShape,
-                          arrowSecondPath,
-                          arrowFirstPath,
-                          checkmarkSecondPath,
-                          checkmarkShape
+                         arrowSecondPath,
+                         arrowFirstPath,
+                         checkmarkSecondPath,
+                         checkmarkShape
                 ].map{( $0.cgPath )}
             
             keyFrameAnimation.values = paths
@@ -284,11 +292,11 @@ class CustomView: UIView {
         }
         
         setFinalValue: do {
-           layer.path = checkmarkShape.cgPath
+            layer.path = checkmarkShape.cgPath
         }
         
         startAnimation: do {
-           layer.add(keyFrameAnimation, forKey: nil)
+            layer.add(keyFrameAnimation, forKey: nil)
         }
     }
 }
