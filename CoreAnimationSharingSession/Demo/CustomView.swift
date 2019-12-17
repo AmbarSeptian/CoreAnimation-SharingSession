@@ -34,8 +34,6 @@ class CustomView: UIView {
             
             let path = UIBezierPath(ovalIn: frame).cgPath
             layer.shadowPath = path
-            
-            layer.masksToBounds = false
         }
         
         return layer
@@ -119,12 +117,12 @@ class CustomView: UIView {
         let layer = CAShapeLayer()
         let inset = UIEdgeInsets(120)
         let frame = bounds.inset(by: inset)
-        let center = CGRect(origin: .zero, size: frame.size)
         layer.frame = frame
         
         createArrowPath: do {
             let path = UIBezierPath()
-            let arrowGenerator = ArrowShapeGenerator(frame: center)
+            let arrowFrame = CGRect(origin: .zero, size: frame.size)
+            let arrowGenerator = ArrowShapeGenerator(frame: arrowFrame)
             layer.path = arrowGenerator.createShape().cgPath
         }
         
@@ -153,7 +151,7 @@ class CustomView: UIView {
         
         startAnimation: do {
             animateRotateCircle(circleLayer, duration: duration)
-            animateCircleScale(rippleLayer, duration: duration)
+            animateRipple(rippleLayer, duration: duration)
             animateArrow(downArrowLayer, duration: duration)
         }
     }
@@ -182,6 +180,12 @@ class CustomView: UIView {
         let strokeColorAnimation: CABasicAnimation
         let animationGroup: CAAnimationGroup
         
+        configureStrokeColorAnimation: do {
+            strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
+            strokeColorAnimation.fromValue = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).cgColor
+            strokeColorAnimation.toValue = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1).cgColor
+        }
+        
         configureStrokeEndAnimation: do {
             strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
             strokeEndAnimation.fromValue = 0
@@ -191,12 +195,6 @@ class CustomView: UIView {
         configureRotateAnimation: do {
             rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
             rotateAnimation.toValue = CGFloat.pi * 4
-        }
-        
-        configureStrokeColorAnimation: do {
-            strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
-            strokeColorAnimation.fromValue = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).cgColor
-            strokeColorAnimation.toValue = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1).cgColor
         }
         
         configureAnimationGroup: do {
@@ -217,21 +215,21 @@ class CustomView: UIView {
         
     }
     
-    func animateCircleScale(_ layer: CALayer, duration: Double) {
+    func animateRipple(_ layer: CALayer, duration: Double) {
         let opacityAnimation: CABasicAnimation
         let scaleAnimation: CABasicAnimation
         let animationGroup: CAAnimationGroup
-        
-        configureOpacityAnimation: do {
-            opacityAnimation = CABasicAnimation(keyPath: "opacity")
-            opacityAnimation.fromValue = 1
-            opacityAnimation.toValue = 0
-        }
         
         configureScaleAnimation: do {
             scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
             scaleAnimation.fromValue = 0.5
             scaleAnimation.toValue = 2
+        }
+        
+        configureOpacityAnimation: do {
+            opacityAnimation = CABasicAnimation(keyPath: "opacity")
+            opacityAnimation.fromValue = 1
+            opacityAnimation.toValue = 0
         }
         
         configureAnimationGroup: do {
