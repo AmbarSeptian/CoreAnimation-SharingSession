@@ -19,7 +19,7 @@ class CustomView: UIView {
         }
     
         configureGradient: do {
-            layer.colors = [#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1), #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1) , #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)].map({ $0.cgColor })
+            layer.colors = [#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1), #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)].map({ $0.cgColor })
             layer.locations = [0, 0.2]
             layer.startPoint = CGPoint(x: 0.5, y: 0.2)
             layer.endPoint = CGPoint(x: 1, y: 1)
@@ -52,13 +52,13 @@ class CustomView: UIView {
         return layer
     }()
     
-    lazy var gradientLayer: CAGradientLayer = {
-         let layer = CAGradientLayer()
-         let frame = bounds
-         layer.frame = frame
-         layer.colors = [#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)].map({ $0.cgColor })
-        return layer
-     }()
+    lazy var cloudGradientLayer: CAGradientLayer = {
+          let layer = CAGradientLayer()
+          let frame = bounds
+          layer.frame = frame
+          layer.colors = [#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)].map({ $0.cgColor })
+         return layer
+      }()
     
     lazy var circleLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
@@ -139,9 +139,9 @@ class CustomView: UIView {
         let duration: Double = 4
         
         startAnimation: do {
-            animateRotateCircle(layer: circleLayer, duration: duration)
-            animateCircleScale(layer: rippleLayer, duration: duration)
-            animateArrow(layer: downArrowLayer, duration: duration)
+            animateRotateCircle(circleLayer, duration: duration)
+            animateCircleScale(rippleLayer, duration: duration)
+            animateArrow(downArrowLayer, duration: duration)
         }
     }
     
@@ -149,13 +149,13 @@ class CustomView: UIView {
         addSublayers: do {
             layer.addSublayer(replicatorLayer)
             layer.addSublayer(buttonLayer)
-            layer.addSublayer(gradientLayer)
+            layer.addSublayer(cloudGradientLayer)
             layer.addSublayer(circleLayer)
             layer.addSublayer(downArrowLayer)
         }
        
         masking: do {
-           gradientLayer.mask = cloudLayer
+           cloudGradientLayer.mask = cloudLayer
         }
     }
     
@@ -163,7 +163,7 @@ class CustomView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func animateRotateCircle(layer: CAShapeLayer, duration: Double) {
+    func animateRotateCircle(_ layer: CAShapeLayer, duration: Double) {
         let strokeEndAnimation: CABasicAnimation
         let rotateAnimation: CABasicAnimation
         let strokeColorAnimation: CABasicAnimation
@@ -176,7 +176,7 @@ class CustomView: UIView {
         }
 
         configureRotateAnimation: do {
-            rotateAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+            rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
             rotateAnimation.toValue = CGFloat.pi * 4
         }
 
@@ -188,7 +188,7 @@ class CustomView: UIView {
         
         configureAnimationGroup: do {
             animationGroup = CAAnimationGroup()
-            animationGroup.animations = [strokeEndAnimation, rotateAnimation, strokeColorAnimation]
+            animationGroup.animations = [rotateAnimation, strokeEndAnimation, strokeColorAnimation]
             animationGroup.duration = duration
             animationGroup.isRemovedOnCompletion = false
             animationGroup.fillMode = .forwards
@@ -204,7 +204,7 @@ class CustomView: UIView {
         }
     }
     
-    func animateCircleScale(layer: CALayer, duration: Double) {
+    func animateCircleScale(_ layer: CALayer, duration: Double) {
         let opacityAnimation: CABasicAnimation
         let scaleAnimation: CABasicAnimation
         let animationGroup: CAAnimationGroup
@@ -231,7 +231,6 @@ class CustomView: UIView {
         
         setFinalValue: do {
             layer.opacity = 0
-            layer.transform = CATransform3DMakeScale(2, 2, 1)
         }
 
         startAnimation: do {
@@ -239,7 +238,7 @@ class CustomView: UIView {
         }
     }
     
-    func animateArrow(layer: CAShapeLayer, duration: Double) {
+    func animateArrow(_ layer: CAShapeLayer, duration: Double) {
         let bounds = layer.bounds
         let keyFrameAnimation: CAKeyframeAnimation
         
